@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+
+
+
+.navbar{
+    height: 5dz5px;
+    border-bottom-style: solid;
+    border-bottom-width: 10px;
+    border-bottom-color: #002d62;  
+    font-family: 'Oswald', sans-serif;
+    font-color: black;
+}
+
+.dropdown-submenu:hover > a:after {
+    border-left-color: #555;
+}
+
+
+.navbar-inverse {
+    background: #8fafd0
+}

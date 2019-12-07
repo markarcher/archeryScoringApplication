@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi ="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx ="http://www.springframework.org/schema/tx"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/tx
+			http://www.springframework.org/schema/tx/spring-tx.xsd
+			">	
+		
+		<!-- @Required @Autowired @PostConstruct... -->
+		<!-- <context:annotation-config /> -->
+		
+
+		<context:component-scan base-package="com.archeryScoringApp.mark.controller" use-default-filters="false" >
+			<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		</context:component-scan>
+		
+		<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+			<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+			<property name="prefix" value="/WEB-INF/jsp/" /> 
+			<property name="suffix" value=".jsp" />
+		</bean>
+		
+		
+		 <tx:annotation-driven />
+	  <bean name="transactionManager" 
+	  class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	  <property name="sessionFactory" ref="sessionFactory"/>
+	  </bean>
+	 
+			<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+			<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+			<property name="url" value="jdbc:mysql://localhost:3307/archeryscorring"/>
+			<property name="username" value="root"/>
+			<property name="password" value="1234"/>
+			</bean>
+		 	
+		 <bean name= "sessionFactory"
+	 	 class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		 <property name="dataSource" ref="dataSource"/>
+		 <property name="hibernateProperties">
+			 <props>
+				 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				 <!-- validate |update|create|create-drop -->
+				 <prop key="hibernate.hbm2ddl.auto">create</prop>
+				 <prop key="hibernate.show_sql">true</prop>
+				 <!-- Disable the second-level cache -->
+				 <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+			 </props>
+		 </property>
+		 <property name="annotatedClasses">
+			 <list>
+			   <!--  <value>com.archeryScoringApp.mark.domain.User</value>  -->
+			    <value>com.archeryScoringApp.mark.domain.Archer</value> 
+			      <value>com.archeryScoringApp.mark.domain.Club</value> 
+			      <value>com.archeryScoringApp.mark.domain.Score</value> 
+			       <value>com.archeryScoringApp.mark.domain.Tournament</value>
+			       <value>com.archeryScoringApp.mark.domain.User</value>
+			 </list>
+		</property>
+	 </bean>
+	 
+    <bean id="userService" class="com.archeryScoringApp.mark.service.UserServiceImpl" autowire="byName" ></bean> 
+  	<bean name="userDao" class="com.archeryScoringApp.mark.dao.UserDaoImpl">
+   	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+     <bean id="archerService" class="com.archeryScoringApp.mark.service.ArcherServiceImpl" autowire="byName" ></bean> 
+  	 <bean name="archerDao" class="com.archeryScoringApp.mark.dao.ArcherDaoImpl">
+     <property name="sessionFactory" ref="sessionFactory" />
+     </bean>
+    <!-- 
+    <bean id="categoryservice" class="com.example.service.CategoryServiceImpl" autowire="byName" ></bean> 
+  	<bean name="categorydao" class="com.example.dao.CategoryDaoImpl">
+   	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="productservice" class="com.example.service.ProductServiceImpl" autowire="byName" ></bean> 
+  	<bean name="productdao" class="com.example.dao.ProductDaoImpl">
+   	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+	
+    
+      <bean id="cartOrderService" class="com.example.service.CartOrderServiceImpl" autowire="byName" ></bean> 
+     <bean name="cartOrderDao" class="com.example.dao.CartOrderDaoImpl">
+   	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+	
+	 <bean id="cartOrderDetailService" class="com.example.service.CartOrderDetailServiceImpl" autowire="byName" ></bean> 
+     <bean name="cartOrderDetailDao" class="com.example.dao.CartOrderDetailDaoImpl">
+   	<property name="sessionFactory" ref="sessionFactory" />
+    </bean> -->
+ <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> 
+</beans>
